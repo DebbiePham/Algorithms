@@ -308,6 +308,67 @@ class BinarySearchTree {
     }
 
 
+    /**
+     * Recursively counts the total number of nodes in this tree.
+     * - Time: O(?).
+     * - Space: O(?).
+     * @param {Node} node The current node during the traversal of this tree.
+     * @returns {number} The total number of nodes.
+     */
+    size(node = this.root) {
+        //Your code here
+        if(!node) return 0;
+
+        return 1 + this.size(node.left) + this.size(node.right);
+    }
+
+    /**
+     * Calculates the height of the tree which is based on how many nodes from
+     * top to bottom (whichever side is taller).
+     * - Time: O(?).
+     * - Space: O(?).
+     * @param {Node} node The current node during traversal of this tree.
+     * @returns {number} The height of the tree.
+     */
+    height(node = this.root) { 
+        //Your code here
+        if(!node) return 0;
+        let leftHeight = this.height(node.left);
+        let rightHeight = this.height(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    /**
+     * BFS order: horizontal rows top-down left-to-right.
+     * Converts this BST into an array following Breadth First Search order.
+     * Example on the fullTree var:
+     * [25, 15, 50, 10, 22, 35, 70, 4, 12, 18, 24, 31, 44, 66, 90]
+     * @param {Node} current The current node during the traversal of this tree.
+     * @returns {Array<number>} The data of all nodes in BFS order.
+     */
+    toArrLevelorder(current = this.root) {
+        //Your code here
+        let result = [];
+        let queue = [];
+
+        queue.push(current); //Enqueue the root
+        // console.log(queue);
+
+        while(queue.length > 0){
+            let node = queue.shift(); // Dequeue the front node
+            result.push(node.data);
+
+            if(node.left){
+                queue.push(node.left);
+            }
+            if(node.right){
+                queue.push(node.right)
+            }
+        }
+        return result;
+    }
+
+
 }
 
 
@@ -333,13 +394,13 @@ class BinarySearchTree {
       /   \
     5     15
 */
-// const threeLevelTree = new BinarySearchTree();
-// threeLevelTree.root = new BSTNode(10);
-// threeLevelTree.root.left = new BSTNode(5);
-// threeLevelTree.root.left.left = new BSTNode(2);
-// threeLevelTree.root.left.right = new BSTNode(6);
-// threeLevelTree.root.right = new BSTNode(15);
-// threeLevelTree.root.right.left = new BSTNode(13);
+const threeLevelTree = new BinarySearchTree();
+threeLevelTree.root = new BSTNode(10);
+threeLevelTree.root.left = new BSTNode(5);
+threeLevelTree.root.left.left = new BSTNode(2);
+threeLevelTree.root.left.right = new BSTNode(6);
+threeLevelTree.root.right = new BSTNode(15);
+threeLevelTree.root.right.left = new BSTNode(13);
 
 /* threeLevelTree 
         root
@@ -401,7 +462,18 @@ fullTree
     4    12  18  24  31  44 66  90
 */
 
+// fullTree.print();
+// console.log(fullTree.toArrPreorder(), "\nshould be \n [25, 15, 10, 4, 12, 22, 18, 24, 50, 35, 31, 44, 70, 66, 90]");
+// console.log(fullTree.toArrInorder(), "\nshould be \n [4, 10, 12, 15, 18, 22, 24, 25, 31, 35, 44, 50, 66, 70, 90]");
+// console.log(fullTree.toArrPostorder(), "\nshould be \n [4, 12, 10, 18, 24, 22, 15, 31, 44, 35, 66, 90, 70, 50, 25]");
+
+// console.log("------ Size ------")
+// console.log(fullTree.size());
+// console.log(threeLevelTree.size());
+
+// console.log("------- height ------")
+// console.log(fullTree.height());
+// console.log(threeLevelTree.height());
+
 fullTree.print();
-console.log(fullTree.toArrPreorder(), "\nshould be \n [25, 15, 10, 4, 12, 22, 18, 24, 50, 35, 31, 44, 70, 66, 90]");
-console.log(fullTree.toArrInorder(), "\nshould be \n [4, 10, 12, 15, 18, 22, 24, 25, 31, 35, 44, 50, 66, 70, 90]");
-console.log(fullTree.toArrPostorder(), "\nshould be \n [4, 12, 10, 18, 24, 22, 15, 31, 44, 35, 66, 90, 70, 50, 25]");
+console.log(fullTree.toArrLevelorder());
